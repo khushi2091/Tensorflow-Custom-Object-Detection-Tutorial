@@ -1,0 +1,38 @@
+<annotation>
+	<folder>labelled hand</folder>
+	<filename>IMG_20190912_121947_BURST4.jpg</filename>
+	<path>\home\dsp100\models\research\object_detection\images\train\IMG_20190912_121947_BURST4.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>4000</width>
+		<height>3000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1016</xmin>
+			<ymin>595</ymin>
+			<xmax>2152</xmax>
+			<ymax>2200</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>2197</xmin>
+			<ymin>931</ymin>
+			<xmax>3697</xmax>
+			<ymax>2745</ymax>
+		</bndbox>
+	</object>
+</annotation>

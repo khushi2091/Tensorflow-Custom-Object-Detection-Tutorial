@@ -1,0 +1,38 @@
+<annotation>
+	<folder>hands_detection original images</folder>
+	<filename>IMG_20190912_122719_BURST13.jpg</filename>
+	<path>\home\dsp100\models\research\object_detection\images\train\IMG_20190912_122719_BURST13.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>4000</width>
+		<height>3000</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>838</xmin>
+			<ymin>427</ymin>
+			<xmax>2061</xmax>
+			<ymax>1909</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1811</xmin>
+			<ymin>1709</ymin>
+			<xmax>2711</xmax>
+			<ymax>2959</ymax>
+		</bndbox>
+	</object>
+</annotation>
