@@ -4,7 +4,7 @@
 This repository is a tutorial for how to use TensorFlow's Object Detection API to train an object detection classifier on Windows, Linux and Google Coral.
 
 This readme describes every step required to get going with your own object detection classifier: 
-1. [Installing Anaconda and NVIDIA GPU drivers]()
+1. [Installing Anaconda and NVIDIA GPU drivers](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/README.md#1-installing-anaconda-and-nvidia-gpu-drivers)
 2. [Setting up the Anaconda Virtual Environment]()
 3. [Organizing your Object Detection directory structure]()
 4. [Installed labelImg and annotate image datasets]()
@@ -37,6 +37,49 @@ Follow [this YouTube video](https://www.youtube.com/watch?v=cL05xtTocmY), which 
 
 I am using Windows which does not have NVIDIA GPU. Hence skipping this step in the YouTube video.
 
-In order to install [Anaconda](https://www.anaconda.com/distribution/#download-section) Download Anaconda for Windows Python 3.7 and follow the steps mentioned [here](https://docs.anaconda.com/anaconda/install/windows/) for installing Anaconda.
+In order to install [Anaconda](https://www.anaconda.com/distribution/#download-section), Download Anaconda for Windows Python 3.7 and follow the steps mentioned [here](https://docs.anaconda.com/anaconda/install/windows/) for installing Anaconda.
 #### Note: The current version of Anaconda uses Python 3.7, which is not officially supported by TensorFlow. However, when creating an Anaconda virtual environment during Step 2d of this tutorial, we will tell it to use Python 3.6)
+
+### 2. Setting up the Anaconda Virtual Environment
+Lets create an virtual environment in order to setup the Custom Tensorflow object detetction setup for your own data. From the Start menu in Windows, search for the Anaconda Prompt utility, right click on it, and click “Run as Administrator”. If Windows asks you if you would like to allow it to make changes to your computer, click Yes. It also requires several additional Python packages, specific additions to the PATH and PYTHONPATH variables, and a few extra setup commands to get everything set up to run or train an object detection model.
+In the command terminal that pops up, run the following command to create virtual environment:
+```
+C:\> conda create -n TF_object_detection pip python=3.6
+```
+
+Then, activate the environment using the following command
+```
+C:\> activate TF_object_detection
+
+```
+
+For detailed steps to install Tensorflow, follow the [Tensorflow installation instructions](https://www.tensorflow.org/install/pip#3.-install-the-tensorflow-pip-package). A typical user can install Tensorflow using one of the following commands:
+```
+# For CPU
+(TF_object_detection) C:\>  pip install tensorflow
+# For GPU
+(TF_object_detection) C:\> pip install tensorflow-gpu
+```
+Install the other necessary packages by issuing the following commands:
+```
+(TF_object_detection) C:\> conda install -c anaconda protobuf
+(TF_object_detection) C:\> pip install Cython
+(TF_object_detection) C:\> pip install contextlib2
+(TF_object_detection) C:\> pip install pillow
+(TF_object_detection) C:\> pip install lmxl
+(TF_object_detection) C:\> pip install jupyter
+(TF_object_detection) C:\> pip install matplotlib
+```
+#### 2f. Protobuf compilation
+The Tensorflow Object Detection API uses Protobufs to configure model and training parameters. Before the framework can be used, the Protobuf libraries must be compiled. This should be done by running the following command from the C:/TF_object_detection/models/research/ directory
+```
+# From TF_object_detection/models/research/
+protoc object_detection/protos/*.proto --python_out=.
+```
+
+Create a folder directly in C: and name it “TF_object_detection”. Go to your working directory after opening Anaconda.
+
+
+
+
 
