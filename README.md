@@ -83,6 +83,7 @@ TensorFlow provides several object detection models (pre-trained classifiers wit
 We are planning to run the hand detector model in Edge devices such as Rasberry pie or Google coral (Note: We have separate tutorial for creating Custom Object detector classifier in Google coral where the Quantized model such as SSD-Mobilenet-V2-Quantized has been used). We have started with SSD-Inception-V2 mode but it was quite slow while running live in a video stream. I re-trained my classifier with SSD-Mobilenet-V2 model and the detection speed quite improved but with a lower accuracy. In order to improve the accuracy, the training has been done for a large no. of steps.
 
 In this tutorial, we will use the SSD-Mobilenet-V2 model which can be downloaded [here](http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v2_coco_2018_03_29.tar.gz). Open the downloaded ssd_mobilenet_v2_coco_2018_03_29.tar.gz file with a file archiver such as WinZip or 7-Zip and extract the ssd_mobilenet_v2_coco_2018_03_29 folder to the C:\models\research\object_detection folder.
+
 At this point, here is what your C:\models\research\object_detection folder should look like:
 
 <p align="center">
@@ -103,22 +104,17 @@ Inside any of the model directory, you will find:
 Create a folder name as "TF_object_detection" inside C:/ drive. Move the "model" directory inside TF_object_detection such that "C:/TF_object_detection/models/research/object_detection/" this working directory will contain the full TensorFlow object detection framework, as well as your training images, training data, trained classifier, configuration files, and everything else needed for the object detection classifier.
 
         TF_object_detection
-        ├─ labelImg
-        │   └─ train
-		│   └─ test
         ├─ models
         │   ├─ official
         │   ├─ research
         │   ├─ samples
         │   └─ tutorials
-        └─ workspace
-            └─ training_demo
 			
-#### 2.1 Protobuf compilation
+#### 3.1 Protobuf compilation
 The Tensorflow Object Detection API uses Protobufs to configure model and training parameters. Before the framework can be used, the Protobuf libraries must be compiled. This should be done by running the following command from the C:/TF_object_detection/models/research/ directory
 ```
 (TF_object_detection) C:\> cd C:\TF_object_detection\models\research
-(TF_object_detection) C:\> protoc object_detection\protos\*.proto --python_out=.
+(TF_object_detection) C:\TF_object_detection\models\research> protoc object_detection\protos\*.proto --python_out=.
 ```
 This creates a name_pb2.py file from every name.proto file in the \object_detection\protos folder.
 
@@ -128,5 +124,73 @@ When running locally, the tensorflow/models/research/ and slim directories shoul
 # From tensorflow/models/research/
 
 (TF_object_detection) C:\> cd C:\TF_object_detection\models\research
-(TF_object_detection) C:\> set PYTHONPATH=C:\TF_object_detection\models;C:\TF_object_detection\models\research;C:\TF_object_detection\models\research\slim
+(TF_object_detection) C:\TF_object_detection\models\research> set PYTHONPATH=C:\TF_object_detection\models;C:\TF_object_detection\models\research;C:\TF_object_detection\models\research\slim
+
 ```
+**(Note: This command needs to run from every new terminal you start. Every time the "TF_object_detection" virtual environment is exited, the PYTHONPATH variable is reset and needs to be set up again. You can use "echo %PYTHONPATH% to see if it has been set or not.)
+
+Finally, run the following commands from the C:\TF_object_detection\models\research directory:
+```
+(TF_object_detection) C:\TF_object_detection\models\research> python setup.py build
+(TF_object_detection) C:\TF_object_detection\models\research> python setup.py install
+```
+
+#### 3.3 Testing the Installation
+You can test that you have correctly installed the Tensorflow Object Detection API by running the following command from the C:\TF_object_detection\models\research directory:
+
+```
+(TF_object_detection) C:\TF_object_detection\models\research> python object_detection/builders/model_builder_test.py
+```
+
+#### 4. Gather data and Generate training data
+Create a folder inside C:\TF_object_detection\models\research\object_detection and name it as "hand_detector". Download the full repository located on this page after clicking [here](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/archive/master.zip). Extract all the content of "Tensorflow-Custom-Object-Detection-Tutorial" inside the folder created just now (hand_detector).
+You will have the following directory structure in your system:
+
+	TF_object_detection
+        ├─ labelImg
+        │   └─ train
+		│   └─ test
+        ├─ models
+        │   ├─ official
+        │   ├─ research
+		│   	└─ object_detection
+		│   		└─ hand_detector
+		│   			└─ images
+		│   				└─ train
+		│   				└─ test
+        │   ├─ samples
+        │   └─ tutorials
+        └─ workspace
+            └─ training_demo
+
+Here is an explanaion of the following foders:
+- ``images``: This folder contains a copy of all the images we have taken for training hand detetcor model, as well as the respective ``*.xml`` files produced for each one, once [``labelImg``](https://drive.google.com/open?id=1MTu9ZkS4kXe5A26F76tbwBtsWS9YgTLt) is used to annotate objects.
+
+    * ``images\train``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to train our model.
+    * ``images\test``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to test our model.
+
+After you have all the pictures you need, move 20% of them to the \object_detection\hand_detector\images\test directory, and 80% of them to the \object_detection\hand_detector\train directory. Make sure there are a variety of pictures in both the \test and \train directories.
+
+#### 4.1 Annotating images
+
+We have annotated the images using a tool called LabelImg. It is a great tool for labeling images, and its [GitHub](https://github.com/tzutalin/labelImg) page has very clear instructions on how to install and use it.
+You can also execute this tool directly from the below given link:
+**[Download LabelImg](https://drive.google.com/open?id=1MTu9ZkS4kXe5A26F76tbwBtsWS9YgTLt)
+
+Note: Verify the version of labelImg in the following way:
+- Open LabelImg directly from the shared executable file (labelImg.exe) or with the help of steps given on github page
+- Go to help follwed by Information as shown here:
+<p align="center">
+  <img src="test_data/labelmg.png">
+</p>
+- Please make sure the version of LabelImg app should be 1.6.0 as shown below:
+<p align="center">
+  <img src="test_data/labelmg_version.png">
+</p>
+
+Download and install LabelImg, and open the directory wherever your training images are located(C:\TF_object_detection\models\research\object_detection\hand_detector\images\train) using ``Open Dir`` option as shown below in the upper left corner. Now, draw a box around each object in each image for which you would like to train your object detetcor. Repeat the process for all the images in the C:\TF_object_detection\models\research\object_detection\hand_detector\images\test directory. It is a manual process hence it will take some time.
+<p align="center">
+  <img src="test_data/label.png">
+</p>
+
+Once the box is created, save the xml file created by LabelImg which contains the label data for each image. These .xml files will be used to generate TFRecords, which are one of the inputs to the TensorFlow trainer. Verify that you have label (i.e. .xml file) for each of the image in the \test and \train directories.
