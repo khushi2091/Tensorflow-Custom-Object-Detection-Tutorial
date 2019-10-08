@@ -139,22 +139,21 @@ Finally, run the following commands from the C:\TF_object_detection\models\resea
 You can test that you have correctly installed the Tensorflow Object Detection API by running the following command from the C:\TF_object_detection\models\research directory:
 
 ```
-(TF_object_detection) C:\TF_object_detection\models\research> python object_detection/builders/model_builder_test.py
+(TF_object_detection) C:\TF_object_detection\models\research> python object_detection\builders\model_builder_test.py
 ```
 
-#### 4. Gather data and Generate training data
+### 4. Gather data and Generate training data
 Create a folder inside C:\TF_object_detection\models\research\object_detection and name it as "hand_detector". Download the full repository located on this page after clicking [here](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/archive/master.zip). Extract all the content of "Tensorflow-Custom-Object-Detection-Tutorial" inside the folder created just now (hand_detector).
 You will have the following directory structure in your system:
 
 	TF_object_detection
-        ├─ labelImg
-        │   └─ train
-		│   └─ test
         ├─ models
         │   ├─ official
         │   ├─ research
 		│   	└─ object_detection
 		│   		└─ hand_detector
+		│   			└─ xml_to_csv.py
+		│   			└─ test_data
 		│   			└─ images
 		│   				└─ train
 		│   				└─ test
@@ -194,3 +193,58 @@ Download and install LabelImg, and open the directory wherever your training ima
 </p>
 
 Once the box is created, save the xml file created by LabelImg which contains the label data for each image. These .xml files will be used to generate TFRecords, which are one of the inputs to the TensorFlow trainer. Verify that you have label (i.e. .xml file) for each of the image in the \test and \train directories.
+
+### 5. Creating Label Map and TensorFlow Records
+Once labelling of all the images are done, we will create the TFRecords that serve as input data to the TensorFlow training model.
+
+#### 5.1 Creating Label Map
+TensorFlow requires a label map, which namely maps each of the used labels to an integer values. This label map is used both by the training and detection processes.
+
+Below I have given an example for updating the label map (e.g label_map.pbtxt) as per your dataset, assuming that our dataset containes 1 labels, hand:
+
+```
+item {
+  id: 1
+  name: 'hand'
+}
+```
+This labelmap tells the trainer what each object is by defining a mapping of class names to class ID numbers. You can define the labelmap for multiple objects by appending the entries with keys 2, 3, 4, and so on.
+
+**Note: It should contain the exact name what you have given in step 4 while labelling of the images. These labels are case sensitive, hence give the exact name.
+
+#### 5.2 Creating TFRecords
+Now that we have generated our annotations and split our dataset into the desired training and testing subsets, it is time to convert our annotations into the so called TFRecord format.
+
+There are two steps in doing so:
+
+- Converting the individual *.xml files to a unified *.csv file for each dataset.
+
+	# The following command should execute in order to create train data:
+	```
+	python xml_to_csv.py -i [PATH_TO_IMAGES_FOLDER]/train -o [PATH_TO_ANNOTATIONS_FOLDER]/train_labels.csv
+	```
+	Run the following command from C:\TF_object_detection\models\research directory:
+	```
+	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train\train_labels.csv
+	```
+
+	# The following command should execute in order to create test data:
+	```
+	python xml_to_csv.py -i [PATH_TO_IMAGES_FOLDER]/test -o [PATH_TO_ANNOTATIONS_FOLDER]/test_labels.csv
+	```
+	Run the following command from C:\TF_object_detection\models\research directory:
+	```
+	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train\test_labels.csv
+	```
+	This will create train_labels.csv and test_labels.csv file inside \object_detection\hand_detector\images folder.
+
+- Converting the *.csv files of each dataset to *.record files (TFRecord format).
+	Now that we have obtained our *.csv annotation files, we will need to generate the TFRecords that serve as input data to the TensorFlow training model. This tutorial uses the xml_to_csv.py and generate_tfrecord.py script
+	Next, open the generate_tfrecord.py file in a text editor. Replace the label map starting at line 31 with your own label map, where each object is assigned an ID number. This same number assignment will be used when configuring the labelmap.pbtxt file.
+ 
+ 
+ 
+ 
+ 
