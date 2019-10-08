@@ -153,6 +153,7 @@ You will have the following directory structure in your system:
 		│   	└─ object_detection
 		│   		└─ hand_detector
 		│   			└─ xml_to_csv.py
+		│   			└─ generate_tfrecord.py
 		│   			└─ test_data
 		│   			└─ images
 		│   				└─ train
@@ -218,8 +219,7 @@ Now that we have generated our annotations and split our dataset into the desire
 There are two steps in doing so:
 
 - Converting the individual *.xml files to a unified *.csv file for each dataset.
-
-	# The following command should execute in order to create train data:
+	The following command should execute in order to create train data:
 	```
 	python xml_to_csv.py -i [PATH_TO_IMAGES_FOLDER]/train -o [PATH_TO_ANNOTATIONS_FOLDER]/train_labels.csv
 	```
@@ -229,7 +229,7 @@ There are two steps in doing so:
 	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train\train_labels.csv
 	```
 
-	# The following command should execute in order to create test data:
+	The following command should execute in order to create test data:
 	```
 	python xml_to_csv.py -i [PATH_TO_IMAGES_FOLDER]/test -o [PATH_TO_ANNOTATIONS_FOLDER]/test_labels.csv
 	```
@@ -241,10 +241,51 @@ There are two steps in doing so:
 	This will create train_labels.csv and test_labels.csv file inside \object_detection\hand_detector\images folder.
 
 - Converting the *.csv files of each dataset to *.record files (TFRecord format).
-	Now that we have obtained our *.csv annotation files, we will need to generate the TFRecords that serve as input data to the TensorFlow training model. This tutorial uses the xml_to_csv.py and generate_tfrecord.py script
-	Next, open the generate_tfrecord.py file in a text editor. Replace the label map starting at line 31 with your own label map, where each object is assigned an ID number. This same number assignment will be used when configuring the labelmap.pbtxt file.
- 
- 
- 
- 
- 
+	Now that we have obtained our *.csv annotation files, we will need to generate the TFRecords that serve as input data to the TensorFlow training model.
+	Next, open the **generate_tfrecord.py** file located in TF_object_detection\models\research\object_detection directory in a text editor.
+	
+	```
+	# TO-DO replace this with label map
+	def class_text_to_int(row_label):
+		if row_label == 'hand':
+			return 1
+		else:
+			None
+	```
+	Here is an example of multiple object detector such as Apple, Orange, Banana. Replace the label map starting at line 31 with your own label map, where each object is assigned an ID number. This same number assignment will be used when configuring the labelmap.pbtxt file as shown below:
+	```
+	item {
+	  id: 1
+	  name: 'apple'
+	}
+	item {
+	  id: 2
+	  name: 'orange'
+	}
+	item {
+	  id: 3
+	  name: 'banana'
+	}
+
+	```
+	Accordingly, the required changes needs to be done in generate_tfrecord.py as given below:
+	```
+	def class_text_to_int(row_label):
+    if row_label == 'apple':
+        return 1
+    elif row_label == 'orange':
+        return 2
+    elif row_label == 'banana':
+        return 3
+    else:
+        None
+	```
+	**Once these changes are done, run the following command from TF_object_detection\models\research\object_detection directory in order to create tfrecords for train and test data:
+	```
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\train\train_labels.csv --output_path=hand_detector\train.record --img_path=hand_detector\images\train
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\test\test_labels.csv --output_path=hand_detector\test.record --img_path=hand_detector\images\test
+	```
+	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
+
+### 6. Configure a training pipeline
+	
