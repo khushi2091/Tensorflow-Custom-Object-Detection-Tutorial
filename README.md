@@ -4,12 +4,12 @@
 This repository is a tutorial for how to use TensorFlow Object Detection API to train an object detection classifier on Windows.
 
 This readme describes every step required to get going with your own object detection classifier: 
-1. [Installing Anaconda and NVIDIA GPU drivers](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/README.md#1-installing-anaconda-and-nvidia-gpu-drivers)
-2. [Installing TensorFlow and Preparing workspace](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/README.md#2-tensorflow-installation-and-preparing-workspace)
-3. [Organizing your Object Detection directory structure](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/README.md#3-organizing-your-object-detection-directory-structure)
-4. [Installed labelImg and annotate image datasets]()
-5. [Generating training data]()
-6. [Configuring training pipeline and creatinglabel map]()
+1. [Installing Anaconda and NVIDIA GPU drivers](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#1-installing-anaconda-and-nvidia-gpu-drivers)
+2. [Installing TensorFlow and Preparing workspace](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#2-installing-tensorflow-and-preparing-workspace)
+3. [Organizing your Object Detection directory structure](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#3-organizing-your-object-detection-directory-structure)
+4. [Gather data and Generate training data](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#4-gather-data-and-generate-training-data)
+5. [Creating Label Map and TensorFlow Records](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#5-creating-label-map-and-tensorflow-records)
+6. [Configure a training pipeline](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#6-configure-a-training-pipeline)
 7. [Train a model and monitor it's progress]()
 8. [Exporting the inference graph]()
 9. [Testing and using your newly trained object detection classifier]()
