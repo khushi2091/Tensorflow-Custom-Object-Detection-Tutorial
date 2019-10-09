@@ -70,7 +70,7 @@ Install the other necessary packages by issuing the following commands:
 (TF_object_detection) C:\> pip install contextlib2
 (TF_object_detection) C:\> pip install pillow
 (TF_object_detection) C:\> pip install lmxl
-(TF_object_detection) C:\> pip install jupyter
+(TF_object_detection) C:\> pip install pandas
 (TF_object_detection) C:\> pip install matplotlib
 ```
 
