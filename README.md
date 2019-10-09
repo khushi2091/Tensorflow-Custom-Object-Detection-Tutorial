@@ -58,9 +58,9 @@ C:\> activate TF_object_detection
 For detailed steps to install Tensorflow, follow the [Tensorflow installation instructions](https://www.tensorflow.org/install/pip#3.-install-the-tensorflow-pip-package). A typical user can install Tensorflow using one of the following commands:
 ```
 # For CPU
-(TF_object_detection) C:\>  pip install tensorflow
+(TF_object_detection) C:\>  pip install tensorflow==1.14
 # For GPU
-(TF_object_detection) C:\> pip install tensorflow-gpu
+(TF_object_detection) C:\> pip install tensorflow-gpu==1.14
 ```
 
 Install the other necessary packages by issuing the following commands:
