@@ -1,0 +1,38 @@
+<annotation>
+	<folder>New folder</folder>
+	<filename>frame_1351.jpg</filename>
+	<path>\home\dsp100\models\research\object_detection\images\train\frame_1351.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1280</width>
+		<height>720</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>765</xmin>
+			<ymin>367</ymin>
+			<xmax>948</xmax>
+			<ymax>507</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>585</xmin>
+			<ymin>361</ymin>
+			<xmax>761</xmax>
+			<ymax>493</ymax>
+		</bndbox>
+	</object>
+</annotation>

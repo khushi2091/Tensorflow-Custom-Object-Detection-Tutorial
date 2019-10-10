@@ -282,8 +282,8 @@ There are two steps in doing so:
 	```
 	**Once these changes are done, run the following command from TF_object_detection\models\research\object_detection directory in order to create tfrecords for train and test data:
 	```
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\train\train_labels.csv --output_path=hand_detector\train.record --img_path=hand_detector\images\train
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\test\test_labels.csv --output_path=hand_detector\test.record --img_path=hand_detector\images\test
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\train_labels.csv --output_path=hand_detector\train.record --img_path=hand_detector\images\train
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\test_labels.csv --output_path=hand_detector\test.record --img_path=hand_detector\images\test
 	```
 	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
 
