@@ -127,7 +127,7 @@ When running locally, the tensorflow/models/research/ and slim directories shoul
 (TF_object_detection) C:\TF_object_detection\models\research> set PYTHONPATH=C:\TF_object_detection\models;C:\TF_object_detection\models\research;C:\TF_object_detection\models\research\slim
 
 ```
-**(Note: This command needs to run from every new terminal you start. Every time the "TF_object_detection" virtual environment is exited, the PYTHONPATH variable is reset and needs to be set up again. You can use "echo %PYTHONPATH% to see if it has been set or not.)
+**Note: This command needs to run from every new terminal you start. Every time the "TF_object_detection" virtual environment is exited, the PYTHONPATH variable is reset and needs to be set up again. You can use "echo %PYTHONPATH% to see if it has been set or not.
 
 Finally, run the following commands from the C:\TF_object_detection\models\research directory:
 ```
@@ -169,7 +169,7 @@ Here is an explanaion of the following foders:
     * ``images\train``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to train our model.
     * ``images\test``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to test our model.
 
-After you have all the pictures you need, move 20% of them to the \object_detection\hand_detector\images\test directory, and 80% of them to the \object_detection\hand_detector\train directory. Make sure there are a variety of pictures in both the \test and \train directories.
+We have taken dataset of hand from [this](http://vision.soic.indiana.edu/projects/egohands/) website. You can take the same dataset in order to create hand detector classifier. After you have all the pictures you need, move 20% of them to the \object_detection\hand_detector\images\test directory, and 80% of them to the \object_detection\hand_detector\train directory. Make sure there are a variety of pictures in both the \test and \train directories.
 
 #### 4.1 Annotating images
 
@@ -211,7 +211,7 @@ item {
 ```
 This labelmap tells the trainer what each object is by defining a mapping of class names to class ID numbers. You can define the labelmap for multiple objects by appending the entries with keys 2, 3, 4, and so on.
 
-**Note: It should contain the exact name what you have given in step 4 while labelling of the images. These labels are case sensitive, hence give the exact name.
+**(Note: It should contain the exact name what you have given in step 4 while labelling of the images. These labels are case sensitive, hence give the exact name.)**
 
 #### 5.2 Creating TFRecords
 Now that we have generated our annotations and split our dataset into the desired training and testing subsets, it is time to convert our annotations into the so called TFRecord format.
@@ -280,10 +280,10 @@ There are two steps in doing so:
     else:
         None
 	```
-	**Once these changes are done, run the following command from TF_object_detection\models\research\object_detection directory in order to create tfrecords for train and test data:
+	**Once these changes are done, run the following command from TF_object_detection\models\research\object_detection directory in order to create tfrecords for train and test data:**
 	```
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\train_labels.csv --output_path=hand_detector\train.record --img_path=hand_detector\images\train
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python generate_tfrecord.py --csv_input=hand_detector\images\test_labels.csv --output_path=hand_detector\test.record --img_path=hand_detector\images\test
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\generate_tfrecord.py --csv_input=hand_detector\images\train_labels.csv --output_path=hand_detector\train.record --img_path=hand_detector\images\train
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\generate_tfrecord.py --csv_input=hand_detector\images\test_labels.csv --output_path=hand_detector\test.record --img_path=hand_detector\images\test
 	```
 	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
 
