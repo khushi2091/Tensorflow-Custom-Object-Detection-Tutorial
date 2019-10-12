@@ -10,8 +10,8 @@ This readme describes every step required to get going with your own object dete
 4. [Gather data and Generate training data](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#4-gather-data-and-generate-training-data)
 5. [Creating Label Map and TensorFlow Records](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#5-creating-label-map-and-tensorflow-records)
 6. [Configure a training pipeline](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#6-configure-a-training-pipeline)
-7. [Train a model and monitor it's progress]()
-8. [Exporting the inference graph]()
+7. [Training and Monitoring the Model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#7-training-and-monitoring-the-model)
+8. [Exporting the model]()
 9. [Testing and using your newly trained object detection classifier]()
 
 The repository provides all the files needed to train hand detector that can accurately detect hand. The tutorial describes how to replace these files with your own files to train a detection classifier for your own dataset. It also has Python scripts to test your classifier out on an image, video, or webcam feed.
@@ -41,7 +41,7 @@ In order to install [Anaconda](https://www.anaconda.com/distribution/#download-s
 #### Note: The current version of Anaconda uses Python 3.7, which is not officially supported by TensorFlow. However, when creating an Anaconda virtual environment during Step 2d of this tutorial, we will tell it to use Python 3.6)
 
 ### 2. Installing TensorFlow and Preparing workspace
-Lets create an virtual environment in order to setup the Custom Tensorflow object detetction setup for your own data. From the Start menu in Windows, search for the Anaconda Prompt utility, right click on it, and click “Run as Administrator”. If Windows asks you if you would like to allow it to make changes to your computer, click Yes. It also requires several additional Python packages, specific additions to the PATH and PYTHONPATH variables, and a few extra setup commands to get everything set up to run or train an object detection model.
+Let's create an virtual environment in order to setup the Custom Tensorflow object detetction setup for your own data. From the Start menu in Windows, search for the Anaconda Prompt utility, right click on it, and click “Run as Administrator”. If Windows asks you if you would like to allow it to make changes to your computer, click Yes. It also requires several additional Python packages, specific additions to the PATH and PYTHONPATH variables, and a few extra setup commands to get everything set up to run or train an object detection model.
 
 #### 2.1 Set up new Anaconda virtual environment
 In the command terminal that pops up, run the following command to create virtual environment:
@@ -65,14 +65,15 @@ For detailed steps to install Tensorflow, follow the [Tensorflow installation in
 
 Install the other necessary packages by issuing the following commands:
 ```
-(TF_object_detection) C:\> conda install -c anaconda protobuf
-(TF_object_detection) C:\> pip install Cython
-(TF_object_detection) C:\> pip install contextlib2
-(TF_object_detection) C:\> pip install pillow
-(TF_object_detection) C:\> pip install lmxl
-(TF_object_detection) C:\> pip install pandas
-(TF_object_detection) C:\> pip install matplotlib
+(TF_object_detection) C:\> conda install -c anaconda protobuf==3.10.0
+(TF_object_detection) C:\> pip install Cython==0.29.13
+(TF_object_detection) C:\> pip install contextlib2==0.6.0
+(TF_object_detection) C:\> pip install Pillow==6.2.0
+(TF_object_detection) C:\> pip install lxml==4.3.4
+(TF_object_detection) C:\> pip install pandas==0.25.1
+(TF_object_detection) C:\> pip install matplotlib==3.1.1
 ```
+Alternatively, you can install all the packages using the requirements.txt file given [here](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/requirements.txt).
 
 #### 2.2 TensorFlow Object Detection API setup
 Download the full TensorFlow object detection repository located [here](https://github.com/tensorflow/models/archive/master.zip). Once the "models-master.zip" file will get downloaded, extract the “models-master” folder and rename “models-master” to just “models”.
@@ -116,7 +117,7 @@ The Tensorflow Object Detection API uses Protobufs to configure model and traini
 (TF_object_detection) C:\> cd C:\TF_object_detection\models\research
 (TF_object_detection) C:\TF_object_detection\models\research> protoc --python_out=. ./object_detection/protos/anchor_generator.proto ./object_detection/protos/argmax_matcher.proto ./object_detection/protos/bipartite_matcher.proto ./object_detection/protos/box_coder.proto ./object_detection/protos/box_predictor.proto ./object_detection/protos/eval.proto ./object_detection/protos/faster_rcnn.proto ./object_detection/protos/faster_rcnn_box_coder.proto ./object_detection/protos/grid_anchor_generator.proto ./object_detection/protos/hyperparams.proto ./object_detection/protos/image_resizer.proto ./object_detection/protos/input_reader.proto ./object_detection/protos/losses.proto ./object_detection/protos/matcher.proto ./object_detection/protos/mean_stddev_box_coder.proto ./object_detection/protos/model.proto ./object_detection/protos/optimizer.proto ./object_detection/protos/pipeline.proto ./object_detection/protos/post_processing.proto ./object_detection/protos/preprocessor.proto ./object_detection/protos/region_similarity_calculator.proto ./object_detection/protos/square_box_coder.proto ./object_detection/protos/ssd.proto ./object_detection/protos/ssd_anchor_generator.proto ./object_detection/protos/string_int_label_map.proto ./object_detection/protos/train.proto ./object_detection/protos/keypoint_box_coder.proto ./object_detection/protos/multiscale_anchor_generator.proto ./object_detection/protos/graph_rewriter.proto ./object_detection/protos/calibration.proto ./object_detection/protos/flexible_grid_anchor_generator.proto
 ```
-This creates a name_pb2.py file from every name.proto file in the \object_detection\protos folder.
+This creates a name_pb2.py file from every name.proto file in the ```\object_detection\protos``` folder.
 
 #### 3.2 Add libraries to PYTHONPATH
 When running locally, the tensorflow/models/research/ and slim directories should be appended to PYTHONPATH. This can be done by running the following from TF_object_detection/models/research/:
@@ -127,19 +128,27 @@ When running locally, the tensorflow/models/research/ and slim directories shoul
 (TF_object_detection) C:\TF_object_detection\models\research> set PYTHONPATH=C:\TF_object_detection\models;C:\TF_object_detection\models\research;C:\TF_object_detection\models\research\slim
 
 ```
-**Note: This command needs to run from every new terminal you start. Every time the "TF_object_detection" virtual environment is exited, the PYTHONPATH variable is reset and needs to be set up again. You can use "echo %PYTHONPATH% to see if it has been set or not.
+**Note: This command needs to run from every new terminal you start. Every time the "TF_object_detection" virtual environment is exited, the PYTHONPATH variable is reset and needs to be set up again. You can use "echo %PYTHONPATH% to see if it has been set or not.**
 
 Finally, run the following commands from the C:\TF_object_detection\models\research directory:
 ```
 (TF_object_detection) C:\TF_object_detection\models\research> python setup.py build
 (TF_object_detection) C:\TF_object_detection\models\research> python setup.py install
 ```
+**Note: This command needs to run everytime there is a change/update of the ```object_detection``` package.**
 
 #### 3.3 Testing the Installation
 You can test that you have correctly installed the Tensorflow Object Detection API by running the following command from the C:\TF_object_detection\models\research directory:
 
 ```
 (TF_object_detection) C:\TF_object_detection\models\research> python object_detection\builders\model_builder_test.py
+```
+If the result looks like the following, you’re ready to proceed to the next steps!
+```
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.123s
+OK
 ```
 
 ### 4. Gather data and Generate training data
@@ -169,13 +178,13 @@ Here is an explanaion of the following foders:
     * ``images\train``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to train our model.
     * ``images\test``: This folder contains a copy of all images, and the respective ``*.xml`` files, which will be used to test our model.
 
-We have taken dataset of hand from [this](http://vision.soic.indiana.edu/projects/egohands/) website. You can take the same dataset in order to create hand detector classifier. After you have all the pictures you need, move 20% of them to the \object_detection\hand_detector\images\test directory, and 80% of them to the \object_detection\hand_detector\train directory. Make sure there are a variety of pictures in both the \test and \train directories.
+We have taken dataset of hand from [this](http://vision.soic.indiana.edu/projects/egohands/) website. You can take the same dataset in order to create hand detector classifier. After you have all the pictures you need, move 20% of them to the ```\object_detection\hand_detector\images\test``` directory, and 80% of them to the ```\object_detection\hand_detector\train``` directory. Make sure there are a variety of pictures in both the \test and \train directories.
 
 #### 4.1 Annotating images
 
 We have annotated the images using a tool called LabelImg. It is a great tool for labeling images, and its [GitHub](https://github.com/tzutalin/labelImg) page has very clear instructions on how to install and use it.
 You can also execute this tool directly from the below given link:
-**[Download LabelImg](https://drive.google.com/open?id=1MTu9ZkS4kXe5A26F76tbwBtsWS9YgTLt)
+**Download LabelImg: [Click here](https://drive.google.com/open?id=1MTu9ZkS4kXe5A26F76tbwBtsWS9YgTLt)**
 
 Note: Verify the version of labelImg in the following way:
 - Open LabelImg directly from the shared executable file (labelImg.exe) or with the help of steps given on github page
@@ -188,15 +197,18 @@ Note: Verify the version of labelImg in the following way:
   <img src="test_data/labelmg_version.png">
 </p>
 
-Download and install LabelImg, and open the directory wherever your training images are located(C:\TF_object_detection\models\research\object_detection\hand_detector\images\train) using ``Open Dir`` option as shown below in the upper left corner. Now, draw a box around each object in each image for which you would like to train your object detetcor. Repeat the process for all the images in the C:\TF_object_detection\models\research\object_detection\hand_detector\images\test directory. It is a manual process hence it will take some time.
+- Download and install LabelImg, and open the directory wherever your training images are located ```(C:\TF_object_detection\models\research\object_detection\hand_detector\images\train)``` using ``Open Dir`` option as shown below in the upper left corner. 
+- Now, draw a box around each object in each image for which you would like to train your object detetcor. Repeat the process for all the images in the C:\TF_object_detection\models\research\object_detection\hand_detector\images\test directory. It is a manual process hence it will take some time.
 <p align="center">
   <img src="test_data/label.png">
 </p>
 
-Once the box is created, save the xml file created by LabelImg which contains the label data for each image. These .xml files will be used to generate TFRecords, which are one of the inputs to the TensorFlow trainer. Verify that you have label (i.e. .xml file) for each of the image in the \test and \train directories.
+- Once the box is created, save the xml file created by LabelImg which contains the label data for each image. These .xml files will be used to generate TFRecords, which are one of the inputs to the TensorFlow trainer. Verify that you have labelled (i.e. .xml file) for each of the image in the \test and \train directories.
+
+When someone else is doing labelling for your training dataset, the xml file will take his/her folder location once image will get labelled. Since, the training of object detection may or may not run in the same system where image is getting labelled, we are sharing apython code in order to change the path of xml files created after labelling of the images. The python code can be found [here](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/Path_chng_XML.py).
 
 ### 5. Creating Label Map and TensorFlow Records
-Once labelling of all the images are done, we will create the TFRecords that serve as input data to the TensorFlow training model.
+Once labelling of all the images are done, we will create the TFRecords that serve as input data to the TensorFlow training model. A TFRecord file stores your data as a sequence of binary strings. 
 
 #### 5.1 Creating Label Map
 TensorFlow requires a label map, which namely maps each of the used labels to an integer values. This label map is used both by the training and detection processes.
@@ -226,7 +238,7 @@ There are two steps in doing so:
 	Run the following command from C:\TF_object_detection\models\research directory:
 	```
 	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train\train_labels.csv
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train_labels.csv
 	```
 
 	The following command should execute in order to create test data:
@@ -236,7 +248,7 @@ There are two steps in doing so:
 	Run the following command from C:\TF_object_detection\models\research directory:
 	```
 	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\train -o hand_detector\images\train\test_labels.csv
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python hand_detector\xml_to_csv.py -i hand_detector\images\test -o hand_detector\images\test_labels.csv
 	```
 	This will create train_labels.csv and test_labels.csv file inside \object_detection\hand_detector\images folder.
 
@@ -288,4 +300,43 @@ There are two steps in doing so:
 	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
 
 ### 6. Configure a training pipeline
+	For the purposes of this tutorial we will not be creating a training job from the scratch, but rather we will go through how to reuse one of the pre-trained models provided by [TensorFlow’s tutorial]( https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md). In the current tutorial, the model we shall be using is the ssd_mobilenet_v2_coco model, since it provides a relatively good trade-off between performance and speed, however there are a number of other models you can use, all of which are listed in [TensorFlow's detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
+	Also, we wanted to deploy the model in other devices such as Android application, Rasberry Pie and Google coral. You will find tutorials in order to train the model for deployment into edge devices using pre-trained quantized models.
+	Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\configs``` and copy the **ssd_mobilenet_v2_coco.config** file into the \object_detection\hand_detector directory. Open the  file with a text editor. Make the following changes to the ssd_mobilenet_v2_coco.config file:
 	
+	- Line 9. Make **num_classes : 1**  i.e. it should be equal to the number of different objects you want the classifier to detect. For example if we want to train on a dataset such as Apple, Orange, Banana, it would be num_classes : 3.
+	
+	- Line 156. You will find ```fine_tune_checkpoint: "PATH_TO_BE_CONFIGURED/model.ckpt".``` Change the fine_tune_checkpoint as mentioned below:
+
+		* ```fine_tune_checkpoint : "C:/TF_object_detection/models/research/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09/model.ckpt"```
+		
+	- Lines 175 and 177. In the train_input_reader section, specify input_path and label_map_path to:
+	
+		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/train.record"```
+		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+
+	- Line 181. You will find ```num_examples: 8000.``` Make it to the number of images you have in the **hand_detector\images\test** directory.
+	
+	- Lines 189 and 191. In the train_input_reader section, specify input_path and label_map_path to:
+	
+		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/test.record"```
+		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+	
+	Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
+	
+### 7. Training and Monitoring the Model
+	Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
+	
+	Now, to initiate a new training job, run the following commands:
+	```
+	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
+	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python train.py --logtostderr --train_dir=hand_detector/ --pipeline_config_path=hand_detector/ssd_mobilenet_v2_coco.config
+	```
+	
+	Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
+	
+	<p align="center">
+	  <img src="test_data/train.png">
+	</p>
+	
+### 8. Evaluation
