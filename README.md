@@ -300,43 +300,46 @@ There are two steps in doing so:
 	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
 
 ### 6. Configure a training pipeline
-	For the purposes of this tutorial we will not be creating a training job from the scratch, but rather we will go through how to reuse one of the pre-trained models provided by [TensorFlow’s tutorial]( https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md). In the current tutorial, the model we shall be using is the ssd_mobilenet_v2_coco model, since it provides a relatively good trade-off between performance and speed, however there are a number of other models you can use, all of which are listed in [TensorFlow's detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
-	Also, we wanted to deploy the model in other devices such as Android application, Rasberry Pie and Google coral. You will find tutorials in order to train the model for deployment into edge devices using pre-trained quantized models.
-	Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\configs``` and copy the **ssd_mobilenet_v2_coco.config** file into the \object_detection\hand_detector directory. Open the  file with a text editor. Make the following changes to the ssd_mobilenet_v2_coco.config file:
-	
-	- Line 9. Make **num_classes : 1**  i.e. it should be equal to the number of different objects you want the classifier to detect. For example if we want to train on a dataset such as Apple, Orange, Banana, it would be num_classes : 3.
-	
-	- Line 156. You will find ```fine_tune_checkpoint: "PATH_TO_BE_CONFIGURED/model.ckpt".``` Change the fine_tune_checkpoint as mentioned below:
 
-		* ```fine_tune_checkpoint : "C:/TF_object_detection/models/research/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09/model.ckpt"```
-		
-	- Lines 175 and 177. In the train_input_reader section, specify input_path and label_map_path to:
-	
-		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/train.record"```
-		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+For the purposes of this tutorial we will not be creating a training job from the scratch, but rather we will go through how to reuse one of the pre-trained models provided by [TensorFlow’s tutorial]( https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md).
+In the current tutorial, the model we shall be using is the ssd_mobilenet_v2_coco model, since it provides a relatively good trade-off between performance and speed, however there are a number of other models you can use, all of which are listed in [TensorFlow's detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
+Also, we wanted to deploy the model in other devices such as Android application, Rasberry Pie and Google coral. You will find tutorials in order to train the model for deployment into edge devices using pre-trained quantized models.
+Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\configs``` and copy the **ssd_mobilenet_v2_coco.config** file into the \object_detection\hand_detector directory. Open the  file with a text editor. Make the following changes to the ssd_mobilenet_v2_coco.config file:
 
-	- Line 181. You will find ```num_examples: 8000.``` Make it to the number of images you have in the **hand_detector\images\test** directory.
+- Line 9. Make **num_classes : 1**  i.e. it should be equal to the number of different objects you want the classifier to detect. For example if we want to train on a dataset such as Apple, Orange, Banana, it would be num_classes : 3.
+
+- Line 156. You will find ```fine_tune_checkpoint: "PATH_TO_BE_CONFIGURED/model.ckpt".``` Change the fine_tune_checkpoint as mentioned below:
+
+	* ```fine_tune_checkpoint : "C:/TF_object_detection/models/research/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09/model.ckpt"```
 	
-	- Lines 189 and 191. In the train_input_reader section, specify input_path and label_map_path to:
-	
-		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/test.record"```
-		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
-	
-	Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
-	
+- Lines 175 and 177. In the train_input_reader section, specify input_path and label_map_path to:
+
+	* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/train.record"```
+	* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+
+- Line 181. You will find ```num_examples: 8000.``` Make it to the number of images you have in the **hand_detector\images\test** directory.
+
+- Lines 189 and 191. In the train_input_reader section, specify input_path and label_map_path to:
+
+	* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/test.record"```
+	* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+
+Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
+
 ### 7. Training and Monitoring the Model
-	Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
 	
-	Now, to initiate a new training job, run the following commands:
-	```
-	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python train.py --logtostderr --train_dir=hand_detector/ --pipeline_config_path=hand_detector/ssd_mobilenet_v2_coco.config
-	```
-	
-	Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
-	
-	<p align="center">
-	  <img src="test_data/train.png">
-	</p>
+Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
+
+Now, to initiate a new training job, run the following commands:
+```
+(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
+(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python train.py --logtostderr --train_dir=hand_detector/ --pipeline_config_path=hand_detector/ssd_mobilenet_v2_coco.config
+```
+
+Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
+
+<p align="center">
+  <img src="test_data/train.png">
+</p>
 	
 ### 8. Evaluation
