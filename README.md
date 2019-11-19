@@ -339,8 +339,14 @@ Now, to initiate a new training job, run the following commands:
 Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
 
 <p align="center">
+<<<<<<< HEAD
   <img src="content_images/train.png">
 </p>
 Training time varies depending on the computing power of your machine
 
+=======
+  <img src="test_data/train.png">
+</p>
+	
+>>>>>>> 1e74745b6409523454db71a290a6785ec07e30e8
 ### 8. Evaluation
