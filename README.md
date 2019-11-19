@@ -17,7 +17,7 @@ This readme describes every step required to get going with your own object dete
 The repository provides all the files needed to train hand detector that can accurately detect hand. The tutorial describes how to replace these files with your own files to train a detection classifier for your own dataset. It also has Python scripts to test your classifier out on an image, video, or webcam feed.
 
 <p align="center">
-  <img src="test_data/hand.png">
+  <img src="content_images/hand.png">
 </p>
 
 ## Introduction
@@ -88,7 +88,7 @@ In this tutorial, we will use the SSD-Mobilenet-V2 model which can be downloaded
 At this point, here is what your C:\models\research\object_detection folder should look like:
 
 <p align="center">
-  <img src="test_data/model.png">
+  <img src="content_images/model.png">
 </p>
 
 Inside any of the model directory, you will find:
@@ -163,7 +163,7 @@ You will have the following directory structure in your system:
 		│   		└─ hand_detector
 		│   			└─ xml_to_csv.py
 		│   			└─ generate_tfrecord.py
-		│   			└─ test_data
+		│   			└─ content_images
 		│   			└─ images
 		│   				└─ train
 		│   				└─ test
@@ -190,17 +190,17 @@ Note: Verify the version of labelImg in the following way:
 - Open LabelImg directly from the shared executable file (labelImg.exe) or with the help of steps given on github page
 - Go to help follwed by Information as shown here:
 <p align="center">
-  <img src="test_data/labelmg.png">
+  <img src="content_images/labelmg.png">
 </p>
 - Please make sure the version of LabelImg app should be 1.6.0 as shown below:
 <p align="center">
-  <img src="test_data/labelmg_version.png">
+  <img src="content_images/labelmg_version.png">
 </p>
 
 - Download and install LabelImg, and open the directory wherever your training images are located ```(C:\TF_object_detection\models\research\object_detection\hand_detector\images\train)``` using ``Open Dir`` option as shown below in the upper left corner. 
 - Now, draw a box around each object in each image for which you would like to train your object detetcor. Repeat the process for all the images in the C:\TF_object_detection\models\research\object_detection\hand_detector\images\test directory. It is a manual process hence it will take some time.
 <p align="center">
-  <img src="test_data/label.png">
+  <img src="content_images/label.png">
 </p>
 
 - Once the box is created, save the xml file created by LabelImg which contains the label data for each image. These .xml files will be used to generate TFRecords, which are one of the inputs to the TensorFlow trainer. Verify that you have labelled (i.e. .xml file) for each of the image in the \test and \train directories.
@@ -300,43 +300,47 @@ There are two steps in doing so:
 	After running these two commands, there should be two new files under the training_demo\annotations folder, named test.record and train.record, respectively.
 
 ### 6. Configure a training pipeline
-	For the purposes of this tutorial we will not be creating a training job from the scratch, but rather we will go through how to reuse one of the pre-trained models provided by [TensorFlow’s tutorial]( https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md). In the current tutorial, the model we shall be using is the ssd_mobilenet_v2_coco model, since it provides a relatively good trade-off between performance and speed, however there are a number of other models you can use, all of which are listed in [TensorFlow's detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
-	Also, we wanted to deploy the model in other devices such as Android application, Rasberry Pie and Google coral. You will find tutorials in order to train the model for deployment into edge devices using pre-trained quantized models.
-	Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\configs``` and copy the **ssd_mobilenet_v2_coco.config** file into the \object_detection\hand_detector directory. Open the  file with a text editor. Make the following changes to the ssd_mobilenet_v2_coco.config file:
-	
-	- Line 9. Make **num_classes : 1**  i.e. it should be equal to the number of different objects you want the classifier to detect. For example if we want to train on a dataset such as Apple, Orange, Banana, it would be num_classes : 3.
-	
-	- Line 156. You will find ```fine_tune_checkpoint: "PATH_TO_BE_CONFIGURED/model.ckpt".``` Change the fine_tune_checkpoint as mentioned below:
 
-		* ```fine_tune_checkpoint : "C:/TF_object_detection/models/research/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09/model.ckpt"```
-		
-	- Lines 175 and 177. In the train_input_reader section, specify input_path and label_map_path to:
-	
-		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/train.record"```
-		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+For the purposes of this tutorial we will not be creating a training job from the scratch, but rather we will go through how to reuse one of the pre-trained models provided by [TensorFlow’s tutorial]( https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/configuring_jobs.md).
+In the current tutorial, the model we shall be using is the ssd_mobilenet_v2_coco model, since it provides a relatively good trade-off between performance and speed, however there are a number of other models you can use, all of which are listed in [TensorFlow's detection model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md).
+Also, we wanted to deploy the model in other devices such as Android application, Rasberry Pie and Google coral. You will find tutorials in order to train the model for deployment into edge devices using pre-trained quantized models.
+Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\configs``` and copy the **ssd_mobilenet_v2_coco.config** file into the \object_detection\hand_detector directory. Open the  file with a text editor. Make the following changes to the ssd_mobilenet_v2_coco.config file:
 
-	- Line 181. You will find ```num_examples: 8000.``` Make it to the number of images you have in the **hand_detector\images\test** directory.
+- Line 9. Make **num_classes : 1**  i.e. it should be equal to the number of different objects you want the classifier to detect. For example if we want to train on a dataset such as Apple, Orange, Banana, it would be num_classes : 3.
+
+- Line 156. You will find ```fine_tune_checkpoint: "PATH_TO_BE_CONFIGURED/model.ckpt".``` Change the fine_tune_checkpoint as mentioned below:
+
+	* ```fine_tune_checkpoint : "C:/TF_object_detection/models/research/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09/model.ckpt"```
 	
-	- Lines 189 and 191. In the train_input_reader section, specify input_path and label_map_path to:
-	
-		* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/test.record"```
-		* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
-	
-	Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
-	
+- Lines 175 and 177. In the train_input_reader section, specify input_path and label_map_path to:
+
+	* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/train.record"```
+	* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+
+- Line 181. You will find ```num_examples: 8000.``` Make it to the number of images you have in the **hand_detector\images\test** directory.
+
+- Lines 189 and 191. In the train_input_reader section, specify input_path and label_map_path to:
+
+	* ```input_path : "C:/TF_object_detection/models/research/object_detection/hand_detector/test.record"```
+	* ```label_map_path: "C:/TF_object_detection/models/research/object_detection/hand_detector/labelmap.pbtxt"```
+
+Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
+
 ### 7. Training and Monitoring the Model
-	Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
 	
-	Now, to initiate a new training job, run the following commands:
-	```
-	(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
-	(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python train.py --logtostderr --train_dir=hand_detector/ --pipeline_config_path=hand_detector/ssd_mobilenet_v2_coco.config
-	```
-	
-	Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
-	
-	<p align="center">
-	  <img src="test_data/train.png">
-	</p>
-	
+Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
+
+Now, to initiate a new training job, run the following commands:
+```
+(TF_object_detection) C:\> cd TF_object_detection\models\research\object_detection
+(TF_object_detection) C:\TF_object_detection\models\research\object_detection> python train.py --logtostderr --train_dir=hand_detector/ --pipeline_config_path=hand_detector/ssd_mobilenet_v2_coco.config
+```
+
+Once the training process has been initiated, you should see a series of print outs similar to the one below (plus/minus some warnings):
+
+<p align="center">
+  <img src="content_images/train.png">
+</p>
+Training time varies depending on the computing power of your machine
+
 ### 8. Evaluation
