@@ -10,9 +10,12 @@ This readme describes every step required to get going with your own object dete
 4. [Gather data and Generate training data](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#4-gather-data-and-generate-training-data)
 5. [Creating Label Map and TensorFlow Records](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#5-creating-label-map-and-tensorflow-records)
 6. [Configure a training pipeline](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#6-configure-a-training-pipeline)
-7. [Training and Monitoring the Model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#7-training-and-monitoring-the-model)
-8. [Exporting the model]()
-9. [Testing and using your newly trained object detection classifier]()
+7. [Training the Model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#7-training-the-model)
+8. [Monitor the Training job](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#8-monitor-the-training-job)
+9. [Exporting the model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#9-exporting-the-model)
+10.[Testing the trained object detection classifier](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#10-testing-the-trained-object-detection-classifier)
+
+[`Common issues`](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/issues.rst)
 
 The repository provides all the files needed to train hand detector that can accurately detect hand. The tutorial describes how to replace these files with your own files to train a detection classifier for your own dataset. It also has Python scripts to test your classifier out on an image, video, or webcam feed.
 
@@ -326,7 +329,7 @@ Navigate to ```C:\TF_object_detection\models\research\object_detection\samples\c
 
 Once the above changes have been applied to our config file (ssd_mobilenet_v2_coco.config), go ahead and save it under \object_detection\hand_detector directory. That’s it! The training job is all configured and ready to go!
 
-### 7. Training and Monitoring the Model
+### 7. Training the Model
 	
 Before we begin training our model, let's go and copy the ```TF_object_detection/models/research/object_detection/legacy/train.py``` script and paste it straight into our ```TF_object_detection/models/research/object_detection``` folder. We will need this script in order to train our model.
 
@@ -342,8 +345,38 @@ Once the training process has been initiated, you should see a series of print o
   <img src="content_images/train.png">
 </p>
 
-If you ARE NOT seeing a print-out similar to that shown above, and/or the training job crashes after a few seconds, then have a look at the issues and proposed solutions, under the :ref:`issues` section, to see if you can find a solution. Alternatively, you can try the issues section of the official Tensorflow Models repo.
+If you ARE NOT seeing a print-out similar to that shown above, and/or the training job crashes after a few seconds, then have a look at the issues and proposed solutions, under the [`Common issues`](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/issues.rst) section, to see if you can find a solution. Alternatively, you can try the issues section of the official Tensorflow Models repo.
 
-Training time varies depending on the computing power of your machine
+Training time varies depending on the computing power of your machine. You will be able to see the Loss report after each epochs.  It will start high and get lower and lower as training progresses. using SSD-Mobilenet-V2 model, it started about 10.0 loss and then dropped below 1.0. It is recommended to train your model until the loss consistently drops below 0.05 or the loss vary within a certain gap around 0.01. This will take around 100,000 steps or about 2 hours (depending on how powerful your CPU and GPU are).
 
-### 8. Evaluation
+### 8. Monitor the Training job
+
+The progress of the training job can be monitored using TensorBoard. this tool allows you to coninuously monitor and visualise a number of different training/detection performance metrics, while your model is being trained. In order to do that, open a new instance of Anaconda Prompt, activate the ```TF_object_detection``` virtual environment; run the following commands:
+
+```
+C:\> activate TF_object_detection
+(TF_object_detection) C:\> cd C:\TF_object_detection\models\research\object_detection
+(TF_object_detection) C:\TF_object_detection\models\research\object_detection>tensorboard --logdir=training\
+```
+
+This  will create a webpage on your local machine at ```YourPCName:6006```, which can be viewed through a web browser. The above command will start a new TensorBoard server, which (by default) listens to port 6006 of your machine. Assuming that everything went well, you should see a print-out similar to the one below (plus/minus some warnings):
+```
+(TF_object_detection) C:\TF_object_detection\models\research\object_detection>TensorBoard 1.6.0 at http://YourPCName:6006 (Press CTRL+C to quit)
+```
+The TensorBoard page provides information and graphs that show how the training is progressing. One important graph is the Loss graph, which shows the overall loss of the classifier over time. Once this is done, go to your browser and type http://YourPCName:6006 in your address bar, following which you should be presented with a dashboard similar to the one shown below (maybe less populated if your model has just started training):
+
+<p align="center">
+  <img src="content_images/loss.png">
+</p>
+
+### 9. Export Inference Graph
+
+
+
+
+
+
+
+
+
+
