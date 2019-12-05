@@ -13,9 +13,9 @@ This readme describes every step required to get going with your own object dete
 7. [Training the Model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#7-training-the-model)
 8. [Monitor the Training job](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#8-monitor-the-training-job)
 9. [Exporting the model](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#9-exporting-the-model)
-10.[Testing the trained object detection classifier](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#10-testing-the-trained-object-detection-classifier)
+10. [Testing the trained object detection classifier](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial#10-testing-the-trained-object-detection-classifier)
 
-[`Common issues`](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/issues.rst)
+## [`Common issues`](https://github.com/khushi2091/Tensorflow-Custom-Object-Detection-Tutorial/blob/master/issues.rst)
 
 The repository provides all the files needed to train hand detector that can accurately detect hand. The tutorial describes how to replace these files with your own files to train a detection classifier for your own dataset. It also has Python scripts to test your classifier out on an image, video, or webcam feed.
 
