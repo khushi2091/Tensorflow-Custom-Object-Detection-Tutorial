@@ -1,6 +1,6 @@
 absl-py==0.8.1
 astor==0.8.0
-certifi==2019.9.11
+certifi==2022.12.7
 contextlib2==0.6.0
 cycler==0.10.0
 Cython==0.29.13
